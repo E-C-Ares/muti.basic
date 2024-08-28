@@ -9,7 +9,7 @@ import os, sys
 from .depLam import * # type: ignore
 from .metLas import *
 import itertools as _it
-from abc     import ABC,\
+from abc     import ABC,ABCMeta,\
                     abstractmethod as _am
 
 
@@ -20,15 +20,38 @@ _D   =  TYP.TSX
 # t
 typ  =lambda x  : type(x)
 
+'''
+class Aas(ABCMeta):pass
+class Num():pass
+'''
 
-# Las=Oia   XXX
-class Lis( list, metaclass =Oia): pass
-class Dis( dict, metaclass =Oia): pass
+# Las=Aas   XXX
+#lass Gup(tuple, metaclass =Aas): pass
+class Lup(tuple, metaclass =Aas): pass
+class Lis( list, metaclass =Aas): pass
+class Dis( dict, metaclass =Aas): pass
+class Gis(  set, metaclass =Aas): pass
+
 # Las=Num   XXX
 class Nus(       metaclass =Num): pass
 #class   Ep_(ctypes.Structure):
     #_fields_ = ("field1", ctypes.c_uint)
     #def value(ego): return super().value()
+
+# lazyUP function tuple
+class Fup(tuple):
+    def __new__(ido, am,*c ,**g):
+        if  not bet( am,'C'    ):     raise TYC.EOT("e_1._fB-lEt-Cal:FRB")
+        #用tuple，因TypeError: unhashable type: 'dict','mappingproxy'
+        ego = super().__new__(ido,(am,c,tuple(g.items())))
+        ego.initLam()
+        return  ego
+    def initLam(ego):
+        @TYB._HM(maxsize=1) # only once 理论上tuple自身只有一种情况，除非元素是一个结构对象
+        def val():return ego[0](*ego[1],**dict(ego[2])) # 闭包
+        ego.val = val
+    @TYB._HM(maxsize=256)   # FIXME 对整个Fup设置合适缓存对付计算密集型 
+    def __call__(ego): return ego.val()
 
 # Linearo-Num
 class NuL(Nus):
@@ -132,6 +155,7 @@ class Zip():
         if not bet(qi,int): qi = _ma.lcm(* [len(e) for e in o])
         return zip( *o,**g)
 
+
     
 class Lic(Lis):
     def __init__(ego, *c, qx=NON,**g):
@@ -147,6 +171,9 @@ class Lic(Lis):
         #ego.__iter__ = Itr_Cyc(ego,_qi).__iter__
         ego.itr=        Itr_Cyc(ego,_qi).__iter__
     def cqi(ego, qi=NON) :  ego.setnItr( qi) # 别名
+
+class Lih():pass
+
 
 
 class   Di_(Dis):
@@ -210,36 +237,51 @@ class   Dic(Di_, dict):
     def update(ego, ox): super(Di_,ego).update(ox)
 
 
+def _flatten(d, parent_key='', sep='-', typ=dict):
+    items = []
+    for k, v in d.items():
+        new_key = f"{parent_key}{sep}{k}" if parent_key else k
+        if isinstance(v,typ):
+            items.extend(_flatten(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return typ(items)
+
+
 # multi-key not tuple key CHECK
 class   Dih(Dic):
-    def getMore(ego, k):
+    def getmore(ego, k): # t:输入输出不影响
         if isinstance(k, tuple):
-            if len(k) == 1: return ego.getMore(k[0])
-            return tuple(ego.getMore(_k) for _k in k)
+            if len(k) == 1: return ego.getmore(k[0])
+            return tuple(ego.getmore(_k) for _k in k)
         if  isinstance(k,list):
-            if len(k) == 1: return ego.getMore(k[0])
+            if len(k) == 1: return ego.getmore(k[0])
             _k = k.pop(0)
-            return Dih(super().__getitem__(_k)).getMore(k)
+            return Dih(super().__getitem__(_k)).getmore(k)
         if isinstance(k, str):return super().__getitem__(k)
     
-    def setMore(ego, k, v):
+    def setmore(ego, k, v):
         if isinstance(k, tuple):
-            if len(k) == 1: ego.setMore(k[0], v)
+            if len(k) == 1: ego.setmore(k[0], v)
             elif len(v)==len(k):
-                for k ,v in zip(k, v): ego.setMore(k, v)
+                for k ,v in zip(k, v): ego.setmore(k, v)
             else: super().__setitem__(k, v)
         elif  isinstance(k,list):
             if len(k) == 0: raise KeyError("Unsupported key type or structure.")
-            elif len(k) == 1: ego.setMore(k[0])
+            elif len(k) == 1: ego.setmore(k[0])
             else: 
-                ego.setMore(k[0],Dih())
-                super().__getitem__(k[0]).setMore(k[1:],v)
+                ego.setmore(k[0],Dih())
+                super().__getitem__(k[0]).setmore(k[1:],v)
         elif isinstance(k, str): super().__setitem__(k,v)
         else: raise KeyError("Unsupported key type or structure.")
+    
+    # gather
+    def gatflat(ego,*c,**g):return _flatten(ego,*c,**g)
+
     def __getitem__(ego, k):
-        return ego.getMore(k)
+        return ego.getmore(k)
     def __setitem__(ego, k, v) -> None:
-        return ego.setMore(k, v)
+        return ego.setmore(k, v)
 
 # dixt
 class   Dix(Dih):
@@ -268,4 +310,7 @@ class   Dix(Dih):
         if hasattr(ego,k): ego.__delattr__(k)
         return   super().pop(k, *c)
 
-if  Her(__name__): h = Dic(ox=1, c=1)
+#if Her(__name__): h = Dic(ox=1, c=1)
+if'__main__'==__name__:
+  print(__file__)
+  h = Dic(ox=1, c=1)

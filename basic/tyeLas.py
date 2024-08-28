@@ -6,26 +6,14 @@
 """
 
 
-from .__deps_ import *
-from .depLam import *
-from .decLam import *
+from.__deps_ import*
+from.depLam import*
+from.decLam import*
+from.typLas import*
 
 #def betrOng( c): return len(ox) >0 容 TODO PALL
 
-# lazyUP function tuple
-class Fup(tuple):
-    def __new__(ido, am,*c ,**g):
-        if  not bet( am,'C'    ):     raise TYC.EOT("e_1._fB-lEt-Cal:FRB")
-        #用tuple，因TypeError: unhashable type: 'dict','mappingproxy'
-        ego = super().__new__(ido,(am,c,tuple(g.items())))
-        ego.initLam()
-        return  ego
-    def initLam(ego):
-        @TYB._HM(maxsize=1) # only once 理论上tuple自身只有一种情况，除非元素是一个结构对象
-        def val():return ego[0](*ego[1],**dict(ego[2])) # 闭包
-        ego.val = val
-    @TYB._HM(maxsize=256)   # FIXME 对整个Fup设置合适缓存对付计算密集型 
-    def __call__(ego): return ego.val()
+
 
 # 示例类，使用装饰器
 @MAXXCBL()
@@ -55,8 +43,8 @@ class Laz:
         #return  Laz(lambda x,y:op(x.val,y.val),o,d)if BT_(d,Laz)\
         #   else Laz(lambda x,y:op(x.val,y    ),o,d)
 
-if  Her(__name__):
-    print(__name__)
+if'__main__'==__name__:
+    print(__file__)
     def SUM(*c): return sum(c)
     q0= Fup(range, 10000000)
     q1= Fup(range, 10000001)

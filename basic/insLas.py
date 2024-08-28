@@ -1,6 +1,7 @@
 import  inspect
 from itertools import groupby
 
+# 根据可调用对象信息格式化参数
 def fmrtInp( am, *c,**g):
     sig = inspect.Signature.from_callable( am)
     _c,_g=[],None

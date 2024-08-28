@@ -115,7 +115,6 @@ def initKam():
   ZDQ =lambda o:dict(o.__class__.__dict__)  
   ZTR =lambda a,t=str:t(a)if t in[list, tuple, dict, set, bytes, bytearray]\
             else''.join(a)if t == str   else a
-  Z0A =lambda*c:c[0]if c else None
   Z_O =lambda o,c:o.__dict__[c]
   ZBO =     _pk.dumps
   ZOB =     _pk.loads
@@ -197,7 +196,7 @@ def initKam():
   RXN =lambda o  :  o.iter(  )
   QI_ =lambda e,o:  o.count(e)
   CPT =lambda t: {c: v for c, v in RGT(t) if not BPC(c)}
-  NO_ =lambda*c: None
+  NO_ =lambda*c,**g: None
   EXM =lambda*c:  ...
   FRM =lambda*c: True
   FЯM =lambda*c:False
@@ -222,8 +221,12 @@ def initKam():
   def vcr(): pass
   # 小函 非core逻辑不套用标签 #TODO:批成
   ## 参数处理
-  z_c =lambda*c:c if len(c)>1 else c[0]if len(c)else None
-  zhc =lambda*c:                   c   if len(c)else()
+  zhc =lambda*c:c#if len(c)else()
+  z0c =lambda*c:c[0]if c else None
+  zsc =lambda*c:c[0]if isinstance(c[0],(list,tuple))else c#list(c)
+  z_c =lambda*c:c if len(c)>1 else z0c(*c)
+  # python3.7以降dict都带order,无需OrderedDict
+  zgc =lambda*c:()if not c else c[0].items()if isinstance(c[0],dict)else enumerate(c[0])if isinstance(c[0],list)else enumerate(c)
   z_g =lambda   **g:               g   if len(g)else None
   zhg =lambda   **g:   tuple(g.items())if len(g)else()
   z__ =lambda*c,**g:(z_c(*c),g)if len(c)and len(g)else g if len(g)else z_c(*c)
@@ -638,6 +641,8 @@ initDep()
 
 # 麻雀初：成役  M_X 就是形如3(m_i)lam形的可定制方法，需要函数名现身 D就是 3(xmi)lambda D需要函数
 def initMθd():
+  ##同巡振听切Z
+  MZ_X=lambda m,x    :lambda _:lambda     *c,**g:x(m)(   *c,**g)
   ##多暗刻单骑U:x=aee\all.. 暗刻e骑m取x
   MU_X=lambda m,x=aee:lambda _:lambda   a,*c,**g:x(m(  e,*c,**g)for e in a) #模m行MU_X以_名命  m 主操作
   MUOX=lambda m,x=aee:lambda _:lambda o,a,*c,**g:x(m(o,e,*c,**g)for e in a) #o必在a前，没办法
@@ -670,6 +675,21 @@ def initMθd():
         return        b(*c)if callable(b)else a if b is None else b
       return _
     return DTF
+  
+    
+
+  def DZ_X(x): # FIXME 得考虑所执行环境的global信息
+      j1=x[0] #T0DO getrNym_UID
+      j0=x[1]
+      def _(m):
+        # 获取函数内部的局部变量
+        local_vars = m.__code__.co_varnames
+        # 检查 add_module 是否在局部变量中
+        if j0 in local_vars:
+            # 替换 add_module 为 add_functe
+            m.__code__ = m.__code__.replace(co_varnames=local_vars[:local_vars.index(j0)] + (j1,) + local_vars[local_vars.index('add_module')+1:])
+        return m
+      return _
 
   @MTFX(hash,b=True)
   def BEH():pass

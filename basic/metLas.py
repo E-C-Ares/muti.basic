@@ -1,5 +1,5 @@
 """
- #  bas-muti :: met-las 类集
+ #  bas-muti :: met-las 型集
  @  E.C.Ares  © 2024 Python Software Foundation
  !  PSF DIVIƷON
  `  Las in meta builtin basic-python, with operators.
@@ -8,72 +8,63 @@
 from.__deps_ import*
 from.insLas  import*
 from    abc  import ABC, ABCMeta,\
-                         abstractmethod as _am
+                    abstractmethod as _am
 # s 抽象，实际可能张冠李戴
 
-
-'''
-class   Typ(type):
-    def __new__(cls, name, bases, attrs):
-        attrs['__slots__'] = ()
-        return super().__new__(cls, name, bases, attrs)
-'''
-
 # t
+'''元
 # All types in basic inherit from this class: isinstance(t, bas.Typ)
-class   Typ(metaclass=ABCMeta):
-    __nym__  = __name__
-
-# Type
-class   Oit(type):
-    #           Oia,nym,fas,nys,cfg
-    def __new__(ego, jc, fs, ns,**g):
-        las = super().__new__(ego, jc, fs, ns,**g)
-        # FIXME
-        las.__nym__ = las.__name__
-        las.__ini__ = las.__init__
-        las.__gas__ = las.__getstate__
-        las.__gal__ = las.__getitem__
-        las.__gat__ = las.__getattr__
-        las.__sas__ = las.__setstate__
-        las.__sat__ = las.__setattr__
-        las.__sal__ = las.__setitem__
-        return las
+class Typ(type):
+  # Aas,nym,fas,nys,cfg
+  def __new__(ego, jc, fs, ns,**g):
+    las = super().__new__(ego, jc, fs, ns,**g)
+    # FIXME
+    las.__nym__ = las.__name__
+    las.__ini__ = las.__init__
+    las.__gas__ = las.__getstate__
+    las.__gal__ = las.__getitem__
+    las.__gat__ = las.__getattr__
+    las.__sas__ = las.__setstate__
+    las.__sat__ = las.__setattr__
+    las.__sal__ = las.__setitem__
+    attrs['__slots__'] = ()
+    return las
+  __nym__  = __name__
+'''    
     
-    @staticmethod
-    @MU_X(getattr)#x=aee 多个找一个属性
-    def gξtmLas():pass
+
+#ARES Las( 名[str] 父[tup] 㯰[dic] 置[ **dic]), las a:xxx
+class Las(type):
+  def __new__(o,j='_',b=(object,),k={},**g):return super().__new__(o,j,b,k,**g)
+  __init__=NO_
+
+# ABC Las
+class Aas(ABCMeta):
+  def __new__(o,j='_',b=(object,),k={},**g):return super().__new__(o,j,b,k,**g)
+  __init__=NO_
     
-    @staticmethod
-    @MUOX(getattr)#x=aee 一个取多个属性
-    def gξtmLat():pass
 
-    @staticmethod
-    @MUOX(setattr)#x=aee
-    def sξtmLat():pass
-
-    @staticmethod
-    @MUOX(delattr)#x=aee 
-    def ƌξtmLat():pass
-
-
-# ABC 元
-class   Oia(ABCMeta):
-    #           Oia,nym,fas,nys,cfg
-    def __new__(ego, jc, fs, ns,**g):
-        ns.update({
-           '_js':lambda o,f=FЯB:(o.__class__,id(o)) if f else o.__class__,
-           '_jc':lambda o,f=FЯB: o.__class__.__name__+ f'({o.__repr__()})'if f else''
-        })
-        return super().__new__(ego, jc, fs, ns,**g)
-    
+#XXX
+class Mas(Las):
+  @staticmethod
+  @MU_X(getattr)#x=aee 多个找一个属性
+  def gξtmLas():pass
+  @staticmethod
+  @MUOX(getattr)#x=aee 一个取多个属性
+  def gξtmLat():pass
+  @staticmethod
+  @MUOX(setattr)#x=aee
+  def sξtmLat():pass
+  @staticmethod
+  @MUOX(delattr)#x=aee 
+  def ƌξtmLat():pass
 
 
 # 预置
 class MetaIni(type):
     def __new__(ido, jc, bh, km,**g):
         # TODO: 判断类继承自? MetaIni 保证不被子类ido覆盖
-        MetaIni.genrMkg(('__init__',ido.gnrtIni),km,bh)
+        MetaIni.genrMkg(('__init__',ido.genrIni),km,bh)
         return  super().__new__( ido, jc, bh, km)
     
     @staticmethod  #@TYB._SM  类属添之
@@ -87,11 +78,11 @@ class MetaIni(type):
     @staticmethod
     def gξtrMRO(ego, jc,*c,**g):
         #FIXME 递归 MetaIni.gξtrMRO(ego.__class__.__bases__[0],jc,*c,**g)
-        am =Oit.gξtmLas(type(ego).mro(),jc)
+        am =Mas.gξtmLas(type(ego).mro(),jc)
         return am(ego,*c,**g)if am is not None else None
 
     @staticmethod
-    def gnrtIni( am, bh):
+    def genrIni( am, bh):
         def _(ego,*c,**g):#bh[0].__init__()
             #_amBini=next((bs.__init__ for bs in bh if hasattr(bs,'__init__')), None) #TODO 用多属性get
             try:
@@ -101,8 +92,8 @@ class MetaIni(type):
                         _amBini=bs.__init__
                         break
                 if _amBini:
-                    h=fmrtInp(_amBini,*c,**g)
-                    _amBini(ego,*h[0],**h[1]) #super(ego.__class__,ego).__init__(*h[0],**h[1])
+                    _c,_g=fmrtInp(_amBini,*c,**g)
+                    _amBini(ego,*_c,**_g) #super(ego.__class__,ego).__init__(*h[0],**h[1])
             except:
                 try:_amBini(ego)
                 except:print(f'Warning: {bs}.__init__ has args check inside!\n@ {inspect.getfile(bs)}')
@@ -144,9 +135,9 @@ class MetaXre(MetaPre):
         MetaXre.genrMkg((('__getattr__',ido.genrGξt),        # GΞT
                          ('__setattr__',ido.genrSξt),        # SΞT
                          ('__detattr__',ido.genrƋξt),        # ƋΞT
-                         ('__getitem__',ido.genrGit),        # GIT
-                         ('__setitem__',ido.genrSit),        # SIT
-                         ('__detitem__',ido.genrƋit)),km,bh) # ƋIT
+                         ('__getitem__',ido.genrGet),        # GIT
+                         ('__setitem__',ido.genrSet),        # SIT
+                         ('__detitem__',ido.genrƋet)),km,bh) # ƋIT
         return  super().__new__( ido, jc, bh, km)
     
     @ staticmethod
@@ -172,24 +163,24 @@ class MetaXre(MetaPre):
         return _
         
     @ staticmethod
-    def genrGit( am, bh):
+    def genrGet( am, bh):
         def _(ego,*c,**g):
           #eturn MetaIni.gξtmLat(ego,am,'rep',*c,**g)
-          return am['git'](ego,*c,**g)if'git'in am else None
+          return am['get'](ego,*c,**g)if'get'in am else None
         return _
         
     @ staticmethod
-    def genrSit( am, bh):
+    def genrSed( am, bh):
         def _(ego,*c,**g):
           #eturn MetaIni.gξtmLat(ego,am,'rep',*c,**g)
-          return am['sit'](ego,*c,**g)if'rep'in am else None
+          return am['sed'](ego,*c,**g)if'sed'in am else None
         return _
     
     @ staticmethod
-    def genrƋit( am, bh):
+    def genrƋet( am, bh):
         def _(ego,*c,**g):
           #eturn MetaIni.gξtmLat(ego,am,'rep',*c,**g)
-          return am['ƌit'](ego,*c,**g)if'rep'in am else None
+          return am['ƌet'](ego,*c,**g)if'ƌet'in am else None
         return _
 
 
@@ -270,7 +261,7 @@ class   Num(type):
 
 
 # Complex;   i.e. Decimal('3.14') + 2.71828 is undefined
-class   NuK(Typ):
+class   NuK(Las):
     __slots__= (   )
     @_am
     def __complex__(ego):
